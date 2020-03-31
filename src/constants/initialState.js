@@ -1,0 +1,16 @@
+export const initialState = {
+    isOpened: undefined,
+    reopen: false,
+    data: [],
+    invalidData: true,
+    isLoading: true,
+    unsavedChanges: false,
+    maxHeight: 0,
+    maxWidth: 0,
+    minWidth: 0,
+    inputValue: '',
+    itemWidth: null,
+    itemHeight: null,
+    checkedItems: [],
+    checkedItemsCounter: 0,
+}

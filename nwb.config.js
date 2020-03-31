@@ -3,7 +3,7 @@ module.exports = {
   npm: {
     esModules: true,
     umd: {
-      global: 'y',
+      global: 'MyLib',
       externals: {
         react: 'React'
       }
@@ -13,7 +13,24 @@ module.exports = {
     html: {
       template: 'demo/src/index.html',
       mountId: 'app',
-      title: 'Demo page 2'
+      title: 'dropdown'
+    },
+    styles: {
+      css: [
+        {
+          include: /\.css$/,
+          exclude: /\.module\.css$/,
+          css: {
+            modules: false,
+          }
+        },
+        {
+          include: /\.module\.css$/,
+          css: {
+            modules: true,
+          }
+        },
+      ]
     }
   }
 }
