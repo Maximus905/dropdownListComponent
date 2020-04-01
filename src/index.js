@@ -3,7 +3,6 @@ import {jsx, css} from "@emotion/core";
 import React, {useEffect, useReducer} from "react"
 import './typeDefs'
 import PropTypes from 'prop-types'
-// import {ContextProvider} from "./ContextProvider"
 import Dropdown from "./components/Dropdown";
 import DropdownMenu from "./components/DropdownMenu"
 import DropdownButton from "./components/DropdownButton"
@@ -12,13 +11,14 @@ import rootReducer, {dispatchMiddleware} from "./reducer";
 import {initialState} from "./constants/initialState";
 import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved} from "./actions";
 import DropdownContext from "./DropdownContext";
-import {convertCheckedItemsArray} from "./helpers";
 
 
 const DropdownList = (props) => {
     const {accessor, getData, filters, sorting, selected,
         applyInstantly, closeAfterSelect,
         maxHeight, maxWidth,minWidth,
+        positionFixed, flip,
+        rightAlignment,
         emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard,
         onChangeSelected: onChangeSelectedExt,
         onOpen: onOpenExt,
@@ -95,9 +95,9 @@ const DropdownList = (props) => {
         <DropdownContext.Provider value={context} >
             <Dropdown onClick={(e) => {
                 e.stopPropagation()
-            }} css={css`width: 200px`}  >
+            }} >
                 <DropdownButton active={props.active} icon={props.buttonIcon}/>
-                <DropdownMenu right modifiers={offset}>
+                <DropdownMenu modifiers={offset} positionFixed={positionFixed} flip={flip} right={rightAlignment}>
                     <MenuBody />
                 </DropdownMenu>
             </Dropdown>
@@ -114,12 +114,14 @@ DropdownList.propTypes = {
     filters: PropTypes.object,
     sorting: PropTypes.object,
     selected: PropTypes.array,
-    rightAlignment: PropTypes.bool, // right alignment if true, else left alignment
     // data: PropTypes.arrayOf(oneOfType([PropTypes.object, PropTypes.string, PropTypes.number, PropTypes.bool]) ),
     // loadingState: PropTypes.bool,
     maxHeight: PropTypes.number, // maxHeight of dropdown list in px
     maxWidth: PropTypes.number, // maxWidth of dropdown list in px
     minWidth: PropTypes.number, //minWidth of dropdown list
+    positionFixed: PropTypes.bool,
+    flip: PropTypes.bool,
+    rightAlignment: PropTypes.bool, // right alignment if true, else left alignment
     //handlers
     onChangeSelected: PropTypes.func, // every time when filter changes
     onOpen: PropTypes.func,
@@ -146,9 +148,11 @@ DropdownList.defaultProps = {
     selected: [],
     fontRatio: 0.8,
     maxWidth: 200,
+    minWidth: 50,
     maxHeight: 400,
 
-    rightAlignment: true,
+    positionFixed: true,
+    flip: false,
 
     emptyWildcard: '<пусто>',
     emptyValueWildcard: '',

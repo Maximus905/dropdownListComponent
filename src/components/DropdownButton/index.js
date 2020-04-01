@@ -8,7 +8,7 @@ const DropdownButton = (props) => {
     const {active, icon, ...rest} = props
     return <DropdownToggle css={css`
             padding: 0 !important;
-            opacity: ${active ? 1 : 0.4};
+            opacity: ${active ? 1 : 1};
         `} {...rest} tag='div' className="d-flex">
         {icon ? icon : <FontAwesomeIcon icon={faBars} size={'sm'} />}
     </DropdownToggle>

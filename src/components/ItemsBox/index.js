@@ -56,6 +56,7 @@ const ItemsBox = (props) => {
                 const width = maxWidth && itemRef.current.offsetWidth > maxWidth
                     ? maxWidth
                     : (minWidth && itemRef.current.offsetWidth < minWidth ? minWidth : itemRef.current.offsetWidth + 1)
+                console.log('width item', width)
                 dispatch(setItemSizes({width, height: itemRef.current.offsetHeight}))
             }, 0)
 

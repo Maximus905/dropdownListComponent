@@ -9,6 +9,7 @@ const Dropdown = (props) => {
     return (
         <DropdownBs css={css`
             font-size: ${fontRatio}rem;
+            display: inline-block;
         `} {...props} isOpen={isOpened} toggle={toggleOpenState} >
             {props.children}
         </DropdownBs>
