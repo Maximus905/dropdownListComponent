@@ -1,5 +1,6 @@
 module.exports = {
   type: 'react-component',
+  polyfill: true,
   npm: {
     esModules: true,
     umd: {
