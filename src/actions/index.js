@@ -5,7 +5,8 @@ import {
     SET_ITEM_SIZES,
     CHANGE_MENU_MAX_HEIGHT,
     UPDATE_DATA_LIST, REOPEN,
-    REQUEST_DATA, LOADING_DATA, RECEIVE_DATA, RECEIVE_INVALID_DATA, RESET_UNSAVED
+    REQUEST_DATA, LOADING_DATA, RECEIVE_DATA, RECEIVE_INVALID_DATA, RESET_UNSAVED,
+    SET_BUTTON_WIDTH,
 } from "../constants/actions";
 
 // ope/close
@@ -22,3 +23,4 @@ export const requestData = ({fetchFunction, accessor, filters, sorting, wildcard
 export const loadingData = () => ({type: LOADING_DATA})
 export const receiveData = ({data, checkedItems, checkedItemsCounter}) => ({type: RECEIVE_DATA, payload: {data, checkedItems, checkedItemsCounter}})
 export const receiveInvalidData = () => ({type: RECEIVE_INVALID_DATA})
+export const setButtonWidth = ({width}) => ({type: SET_BUTTON_WIDTH, payload: width})

@@ -1,29 +1,32 @@
 /**@jsx jsx*/
-import {jsx, css} from "@emotion/core";
-import React, {useEffect, useReducer} from "react"
+import {jsx, css, } from "@emotion/core";
+import React, {useEffect, useReducer, useRef} from "react"
 import './typeDefs'
 import PropTypes from 'prop-types'
+import {DropdownToggle, Button} from 'reactstrap'
+import DefaultButton from "./components/DefaultButton";
 import Dropdown from "./components/Dropdown";
 import DropdownMenu from "./components/DropdownMenu"
 import DropdownButton from "./components/DropdownButton"
 import MenuBody from "./components/MenuBody";
 import rootReducer, {dispatchMiddleware} from "./reducer";
 import {initialState} from "./constants/initialState";
-import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved} from "./actions";
+import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved, setButtonWidth} from "./actions";
 import DropdownContext from "./DropdownContext";
 
-
 const DropdownList = (props) => {
-    const {accessor, getData, filters, sorting, selected,
+    const {buttonContainerWidth, buttonIcon, accessor, getData, filters, sorting, selected,
         applyInstantly, closeAfterSelect,
         maxHeight, maxWidth,minWidth,
-        positionFixed, flip,
+        flip,
         rightAlignment,
         emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard,
         onChangeSelected: onChangeSelectedExt,
         onOpen: onOpenExt,
         onClose: onCloseExt
     } = props
+    const DropdownButton = buttonIcon ? buttonIcon : DefaultButton
+    const buttonRef = useRef(null)
     const wildcards = {emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard}
     const bdColor = 'rgb(206,212,218)'
     const offset = {
@@ -39,6 +42,7 @@ const DropdownList = (props) => {
             }
         }
     }
+
     const [state, dispatch] = useReducer(rootReducer, {...initialState,
         maxHeight, maxWidth, minWidth,
     })
@@ -46,6 +50,10 @@ const DropdownList = (props) => {
     const asyncDispatch = dispatchMiddleware(dispatch)
 
     const toggleOpenState = () => dispatch(switchOpenState())
+    useEffect(() => {
+        if (!buttonRef.current) return
+        if (buttonRef.current.clientWidth !== state.buttonWidth) dispatch(setButtonWidth({width: buttonRef.current.clientWidth}))
+    }, [buttonRef])
     // for lazy loading data for list when list is opening
     useEffect(() => {
         if (isOpened && invalidData) {
@@ -91,13 +99,20 @@ const DropdownList = (props) => {
         bdColor,
 
     }
+    const toggleCss = css`
+      padding: 0 !important;
+      position: relative;
+      width: 100%;
+    `
     return (
         <DropdownContext.Provider value={context} >
-            <Dropdown onClick={(e) => {
+            <Dropdown containerWidth={buttonContainerWidth} onClick={(e) => {
                 e.stopPropagation()
             }} >
-                <DropdownButton active={props.active} icon={props.buttonIcon}/>
-                <DropdownMenu modifiers={offset} positionFixed={positionFixed} flip={flip} right={rightAlignment}>
+                <DropdownToggle css={toggleCss} tag='div' >
+                    <DropdownButton buttonRef={buttonRef} />
+                </DropdownToggle>
+                <DropdownMenu modifiers={offset} flip={flip} right={rightAlignment}>
                     <MenuBody />
                 </DropdownMenu>
             </Dropdown>
@@ -105,7 +120,8 @@ const DropdownList = (props) => {
     )
 }
 DropdownList.propTypes = {
-    // ...DropdownBs.propTypes,
+    buttonContainerWidth: PropTypes.any,
+
     getData: PropTypes.func,
     multiSelect: PropTypes.bool,
     applyInstantly: PropTypes.bool,
@@ -119,7 +135,8 @@ DropdownList.propTypes = {
     maxHeight: PropTypes.number, // maxHeight of dropdown list in px
     maxWidth: PropTypes.number, // maxWidth of dropdown list in px
     minWidth: PropTypes.number, //minWidth of dropdown list
-    positionFixed: PropTypes.bool,
+    widthMenuLikeButton: PropTypes.bool, // if true - set dropdown's menu width as button width
+
     flip: PropTypes.bool,
     rightAlignment: PropTypes.bool, // right alignment if true, else left alignment
     //handlers
@@ -141,18 +158,17 @@ DropdownList.propTypes = {
     buttonIcon: PropTypes.any,
 }
 DropdownList.defaultProps = {
-    // data: [],
     multiSelect: false,
     closeAfterSelect: false,
     applyInstantly: true,
     selected: [],
-    fontRatio: 0.8,
-    maxWidth: 200,
-    minWidth: 50,
+    fontRatio: 1,
+    // maxWidth: 200,
+    // minWidth: 50,
+    widthMenuLikeButton: false,
     maxHeight: 400,
 
-    positionFixed: true,
-    flip: false,
+    flip: true,
 
     emptyWildcard: '<пусто>',
     emptyValueWildcard: '',

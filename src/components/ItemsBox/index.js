@@ -35,8 +35,10 @@ const ItemsBox = (props) => {
     const {
         multiSelect,
         loadingWildcard, emptyListWildcard,
+        widthMenuLikeButton,
         dispatch,
-        state: {isLoading, maxHeight, maxWidth, minWidth, data, itemWidth, itemHeight, inputValue}} = useContext(DropdownContext)
+        state: {isLoading, maxHeight, maxWidth, minWidth, buttonWidth, data, itemWidth, itemHeight, inputValue}} = useContext(DropdownContext)
+    console.log('ItemBox', maxWidth, minWidth, buttonWidth)
     const itemRef = createRef()
     const fuseOption = {
         shouldSort: true,
@@ -51,19 +53,28 @@ const ItemsBox = (props) => {
     }
     const fuse = useMemo(() => new Fuse(data, fuseOption), [data, fuseOption])
     useEffect(() => {
-        if (!itemWidth && !itemHeight && itemRef.current && itemRef.current.offsetWidth && itemRef.current.offsetHeight) {
+        if (widthMenuLikeButton && itemRef.current && itemRef.current.offsetHeight) {
+            setTimeout(() => {
+                const width = buttonWidth > maxWidth
+                    ? maxWidth
+                    : (buttonWidth < minWidth ? minWidth : buttonWidth + 1)
+                console.log('width item like button', width, minWidth, maxWidth, buttonWidth)
+                dispatch(setItemSizes({width, height: itemRef.current.offsetHeight}))
+            }, 0)
+        } else if (!itemWidth && !itemHeight && itemRef.current && itemRef.current.offsetWidth && itemRef.current.offsetHeight) {
             setTimeout(() => {
                 const width = maxWidth && itemRef.current.offsetWidth > maxWidth
                     ? maxWidth
                     : (minWidth && itemRef.current.offsetWidth < minWidth ? minWidth : itemRef.current.offsetWidth + 1)
-                console.log('width item', width)
+                console.log('width item', width, minWidth, maxWidth, buttonWidth)
                 dispatch(setItemSizes({width, height: itemRef.current.offsetHeight}))
             }, 0)
 
         }
-    }, [itemRef])
+    }, [itemRef, buttonWidth, widthMenuLikeButton])
 
     const onClickHandler = ((multiSelect) => (value) => {
+        console.log('item', value)
         dispatch(clickOnItem({value, multiSelect}))
     })(multiSelect)
 
@@ -82,7 +93,11 @@ const ItemsBox = (props) => {
     if (isLoading) {
         return (
             (
-                <div css={css`max-height: ${maxHeight}px;overflow-y: auto; max-width: ${maxWidth}px; min-width: ${minWidth}px`}>
+                <div css={css`
+                              max-height: ${maxHeight}px;
+                              overflow-y: auto;
+                              max-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : maxWidth}px; 
+                              min-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : minWidth}px`}>
                     {/*<div css={css`overflow-y: auto; max-width: ${maxWidth}px; min-width: ${minWidth}px`} >*/}
                         {/*<EmptyList label={loadingWildcard} /></div>*/}
                     <DropdownItem label={loadingWildcard} showCheckIcon={false} onClick={() => {}} />

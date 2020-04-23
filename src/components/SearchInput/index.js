@@ -7,12 +7,14 @@ import {changeInput} from "../../actions"
 import {Badge} from 'reactstrap'
 
 const SearchInput = (props) => {
-    const {state: {inputValue, checkedItemsCounter}, dispatch, fontRatio, bdColor} = useContext(DropdownContext)
+    const {state: {inputValue, checkedItemsCounter, itemWidth}, dispatch, fontRatio, bdColor} = useContext(DropdownContext)
+    console.log('search', itemWidth)
     const onChangeHandler = (e) => {
         dispatch(changeInput(e.target.value))
     }
     return (
         <div css={css`
+            width: ${itemWidth}px;
             padding: 5px;
             position: relative;
         `} className="d-flex justify-content-between align-items-center" >

@@ -7,7 +7,8 @@ import {
     SET_ITEM_SIZES,
     CHANGE_MENU_MAX_HEIGHT,
     UPDATE_DATA_LIST,
-    REQUEST_DATA, LOADING_DATA, RECEIVE_DATA, RECEIVE_INVALID_DATA, RESET_UNSAVED
+    REQUEST_DATA, LOADING_DATA, RECEIVE_DATA, RECEIVE_INVALID_DATA, RESET_UNSAVED,
+    SET_BUTTON_WIDTH
 } from "../constants/actions"
 import {reopenDropdownListSetter} from "../helpers";
 import {loadingData, receiveData, receiveInvalidData} from "../actions";
@@ -56,6 +57,7 @@ const rootReducer = (state, action) => {
     const {multiSelect, value} = payload || {}
     const clickOnItemHandler = ({checkedItems, value, multiSelect}) => {
         const checked = new Set(checkedItems)
+        console.log('checked before', Array.from(checked.keys()))
         if (!multiSelect && checked.has(value)) return checkedItems
         if (multiSelect) {
             checked.has(value) ? checked.delete(value) : checked.add(value)
@@ -63,6 +65,7 @@ const rootReducer = (state, action) => {
             checked.clear()
             checked.add(value)
         }
+        console.log('checked after', Array.from(checked.keys()))
         return Array.from(checked.keys())
     }
 
@@ -108,6 +111,9 @@ const rootReducer = (state, action) => {
             return {...state, data: payload.data, checkedItems: payload.checkedItems, checkedItemsCounter: payload.checkedItemsCounter, isLoading: false, invalidData: false}
         case RECEIVE_INVALID_DATA:
             return {...state, data: [], isLoading: false, invalidData: true}
+        case SET_BUTTON_WIDTH:
+            console.log('button width: ', payload)
+            return {...state, buttonWidth: payload}
         default:
             return state
     }

@@ -8,6 +8,7 @@ export const initialState = {
     maxHeight: 0,
     maxWidth: 0,
     minWidth: 0,
+    buttonWidth: undefined,
     inputValue: '',
     itemWidth: null,
     itemHeight: null,
