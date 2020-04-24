@@ -13,7 +13,7 @@ import EmptyList from "../EmptyList";
 const DropdownItemFunc = (props) => (listProps) => {
     const {style, index} = listProps
     const {data, onClick} = props
-    const handler = () => onClick(data[index].label)
+    const handler = () => onClick(data[index].value)
     const item = data[index]
     return (
         <div style={style}>
@@ -38,7 +38,6 @@ const ItemsBox = (props) => {
         widthMenuLikeButton,
         dispatch,
         state: {isLoading, maxHeight, maxWidth, minWidth, buttonWidth, data, itemWidth, itemHeight, inputValue}} = useContext(DropdownContext)
-    console.log('ItemBox', maxWidth, minWidth, buttonWidth)
     const itemRef = createRef()
     const fuseOption = {
         shouldSort: true,
@@ -58,7 +57,6 @@ const ItemsBox = (props) => {
                 const width = buttonWidth > maxWidth
                     ? maxWidth
                     : (buttonWidth < minWidth ? minWidth : buttonWidth + 1)
-                console.log('width item like button', width, minWidth, maxWidth, buttonWidth)
                 dispatch(setItemSizes({width, height: itemRef.current.offsetHeight}))
             }, 0)
         } else if (!itemWidth && !itemHeight && itemRef.current && itemRef.current.offsetWidth && itemRef.current.offsetHeight) {
@@ -66,7 +64,6 @@ const ItemsBox = (props) => {
                 const width = maxWidth && itemRef.current.offsetWidth > maxWidth
                     ? maxWidth
                     : (minWidth && itemRef.current.offsetWidth < minWidth ? minWidth : itemRef.current.offsetWidth + 1)
-                console.log('width item', width, minWidth, maxWidth, buttonWidth)
                 dispatch(setItemSizes({width, height: itemRef.current.offsetHeight}))
             }, 0)
 
@@ -74,7 +71,6 @@ const ItemsBox = (props) => {
     }, [itemRef, buttonWidth, widthMenuLikeButton])
 
     const onClickHandler = ((multiSelect) => (value) => {
-        console.log('item', value)
         dispatch(clickOnItem({value, multiSelect}))
     })(multiSelect)
 

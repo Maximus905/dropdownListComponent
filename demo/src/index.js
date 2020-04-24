@@ -8,6 +8,7 @@ import {faAngleDown} from "@fortawesome/free-solid-svg-icons"
 import {Button} from 'reactstrap'
 
 import DropdownList from '../../src'
+import {text} from "@fortawesome/fontawesome-svg-core";
 
 async function dropdownListData () {
   const data = Array.from(Array(5), () => 0).map((value, index) => `item-${index}`)
@@ -34,12 +35,12 @@ const Icon2 = ({buttonRef}) => (
 )
 
 const innerContainerCss = css`
-  width: 800px;
-  height: 800px;
+  width: 600px;
+  height: 600px;
 `
 const outerContainerCss = css`
   width: 300px;
-  height: 400px;
+  height: 300px;
   overflow-x: auto;
   overflow-y: auto;
 `
@@ -55,49 +56,46 @@ const ex_1 = css`
 
 const Demo = () => {
     return (
-
-        <div css={css`width: 100vh; height: 100vh; padding: 30px`}>
-            <h5>Example with button</h5>
-            <div css={outerContainerCss}>
-                <div css={innerContainerCss}>
-                    <div css={elementWrapperCss} className="border border-info">
-                        <p>Width dropdown menu like width button (widthMenuLikeButton property)</p>
-                        <p>width of button container is 50%</p>
+        <div className="container-fluid">
+            <div css={css`width: 100vh; height: 100vh; padding: 30px`}>
+                <h5>Example with button</h5>
+                <div css={outerContainerCss}>
+                    <div css={innerContainerCss}>
+                        <div css={elementWrapperCss} className="border border-info">
+                            <DropdownList buttonContainerWidth={'50%'}  getData={dropdownListData} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
+                    <p>Width dropdown menu like width button (widthMenuLikeButton property)</p>
+                    <div className="col-4 bg-info">
+                        <p>container for button</p>
+                        <p>width of button - 50%</p>
                         <DropdownList buttonContainerWidth={'50%'}  getData={dropdownListData} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
-                        <p>Width dropdown menu like width button (widthMenuLikeButton property)</p>
-                        <p>width of button container is 100%</p>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
+                    <p>Width dropdown menu like width button (widthMenuLikeButton property)</p>
+                    <div className="col-4 bg-info">
+                        <p>width of button - 100%</p>
                         <DropdownList buttonContainerWidth={'100%'}  getData={dropdownListData} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
-                        <p>width of dropdown menu is calculated as width of the longest item menu</p>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
+                    <p>width of dropdown menu is calculated as width of the longest item menu</p>
+                    <div className="col-4 bg-info">
                         <p>minWidth and maxWidth restrict width of menu</p>
                         <DropdownList buttonContainerWidth={'100%'}  getData={dropdownListData} buttonIcon={Icon1} minWidth={50} maxWidth={300}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]}/>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-            {/*<div className="row">*/}
-            {/*    <div className="border border-info">*/}
-            {/*        <h5>Example with button</h5>*/}
-            {/*    </div>*/}
-            {/*    <div css={col_2} className="border border-info">*/}
-            {/*        <h5>Example with default icon</h5>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="row">*/}
-            {/*    <div className="border border-info">*/}
-            {/*        <div className="bg-light border border-dark">*/}
-            {/*            <DropdownList buttonContainerWidth={'90%'}  getData={dropdownListData} buttonIcon={Icon1} maxWidth={200} minWidth={200} maxHeight={100} rightAlignment flip />*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*    <div css={col_2} className="border border-info">*/}
-            {/*        <div className="d-flex justify-content-end bg-light border border-dark">*/}
-            {/*            <DropdownList getData={dropdownListData} buttonIcon={Icon2} maxWidth={200} minWidth={200} maxHeight={100} rightAlignment flip />*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <div style={{height: '400px'}}/>
         </div>
      )
 

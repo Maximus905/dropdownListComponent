@@ -53,7 +53,7 @@ const DropdownList = (props) => {
     useEffect(() => {
         if (!buttonRef.current) return
         if (buttonRef.current.clientWidth !== state.buttonWidth) dispatch(setButtonWidth({width: buttonRef.current.clientWidth}))
-    }, [buttonRef])
+    }, [buttonRef.current])
     // for lazy loading data for list when list is opening
     useEffect(() => {
         if (isOpened && invalidData) {
@@ -121,7 +121,6 @@ const DropdownList = (props) => {
 }
 DropdownList.propTypes = {
     buttonContainerWidth: PropTypes.any,
-
     getData: PropTypes.func,
     multiSelect: PropTypes.bool,
     applyInstantly: PropTypes.bool,

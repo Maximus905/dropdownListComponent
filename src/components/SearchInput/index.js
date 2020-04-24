@@ -8,7 +8,6 @@ import {Badge} from 'reactstrap'
 
 const SearchInput = (props) => {
     const {state: {inputValue, checkedItemsCounter, itemWidth}, dispatch, fontRatio, bdColor} = useContext(DropdownContext)
-    console.log('search', itemWidth)
     const onChangeHandler = (e) => {
         dispatch(changeInput(e.target.value))
     }

@@ -22,7 +22,6 @@ export function dispatchMiddleware(dispatch) {
             const data = await fetchFunction({accessor, filters, sorting})
             if (check.array(data)) {
                 const dropdownList = convertDataList({data, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
-                console.log('dispatchMiddleware', dropdownList)
                 dispatch(receiveData({
                     data: dropdownList,
                     checkedItems,
@@ -57,7 +56,6 @@ const rootReducer = (state, action) => {
     const {multiSelect, value} = payload || {}
     const clickOnItemHandler = ({checkedItems, value, multiSelect}) => {
         const checked = new Set(checkedItems)
-        console.log('checked before', Array.from(checked.keys()))
         if (!multiSelect && checked.has(value)) return checkedItems
         if (multiSelect) {
             checked.has(value) ? checked.delete(value) : checked.add(value)
@@ -65,7 +63,6 @@ const rootReducer = (state, action) => {
             checked.clear()
             checked.add(value)
         }
-        console.log('checked after', Array.from(checked.keys()))
         return Array.from(checked.keys())
     }
 
@@ -112,7 +109,6 @@ const rootReducer = (state, action) => {
         case RECEIVE_INVALID_DATA:
             return {...state, data: [], isLoading: false, invalidData: true}
         case SET_BUTTON_WIDTH:
-            console.log('button width: ', payload)
             return {...state, buttonWidth: payload}
         default:
             return state
