@@ -15,20 +15,20 @@ import {loadingData, receiveData, receiveInvalidData} from "../actions";
 import {convertDataList, convertCheckedItemsArray} from "../helpers";
 
 export function dispatchMiddleware(dispatch) {
-    async function getData({dispatch, fetchFunction, accessor, filters, sorting, wildcards, checkedItems}) {
+    async function getData({dispatch, url, dataFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems}) {
         const {emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard} = wildcards
         dispatch(loadingData())
         try {
-            const data = await fetchFunction({accessor, filters, sorting})
-            if (check.array(data)) {
-                const dropdownList = convertDataList({data, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
+            const result = await fetchFunction({url, accessor, filters, sorting, dataFieldName})
+            if (check.array(result[dataFieldName])) {
+                const dropdownList = convertDataList({data: result[dataFieldName], emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
                 dispatch(receiveData({
                     data: dropdownList,
                     checkedItems,
                     checkedItemsCounter: dropdownList.reduce((acc, item) => item.checked ? ++acc : acc, 0)
                 }))
             } else {
-                console.log('Dropdown list: Invalid format of fetched data: ', data )
+                console.log('Dropdown list: Invalid format of fetched data: ', result )
                 throw  new Error('Dropdown list: Invalid format of fetched data from server!')
             }
         } catch (e) {
@@ -38,12 +38,12 @@ export function dispatchMiddleware(dispatch) {
     }
     return (action) => {
         const {type, payload} = action
-        const {fetchFunction, accessor, filters, sorting, wildcards, selected} = payload || {}
+        const {fetchFunction, accessor, filters, sorting, wildcards, selected, url, dataFieldName} = payload || {}
         const {emptyValueWildcard} = wildcards || {}
         switch (type) {
             case REQUEST_DATA:
                 const checkedItems = convertCheckedItemsArray({emptyValueWildcard, checkedItems: selected})
-                return getData({dispatch, fetchFunction, accessor,  filters, sorting, wildcards, checkedItems})
+                return getData({dispatch, url, dataFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems})
             default:
                 return dispatch(action)
         }

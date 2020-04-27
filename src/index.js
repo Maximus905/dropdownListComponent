@@ -13,9 +13,10 @@ import rootReducer, {dispatchMiddleware} from "./reducer";
 import {initialState} from "./constants/initialState";
 import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved, setButtonWidth} from "./actions";
 import DropdownContext from "./DropdownContext";
+import {defaultDataLoader} from "./loaders";
 
 const DropdownList = (props) => {
-    const {buttonContainerWidth, buttonIcon, accessor, getData, filters, sorting, selected,
+    const {buttonContainerWidth, buttonIcon, accessor, dataUrl, dataFieldName, dataLoader, filters, sorting, selected,
         applyInstantly, closeAfterSelect,
         maxHeight, maxWidth,minWidth,
         flip,
@@ -57,7 +58,7 @@ const DropdownList = (props) => {
     // for lazy loading data for list when list is opening
     useEffect(() => {
         if (isOpened && invalidData) {
-            asyncDispatch(requestData({fetchFunction: getData, accessor, filters, sorting, wildcards, selected})).then(r => console.log('data is fetched'))
+            asyncDispatch(requestData({url: dataUrl, dataFieldName, fetchFunction: dataLoader, accessor, filters, sorting, wildcards, selected})).then(r => console.log('data is fetched'))
         }
     }, [isOpened, invalidData])
     useEffect(() => {
@@ -120,15 +121,19 @@ const DropdownList = (props) => {
     )
 }
 DropdownList.propTypes = {
-    buttonContainerWidth: PropTypes.any,
-    getData: PropTypes.func,
-    multiSelect: PropTypes.bool,
-    applyInstantly: PropTypes.bool,
-    closeAfterSelect: PropTypes.bool,
+    dataUrl: PropTypes.string,
+    dataFieldName: PropTypes.string,
+    dataLoader: PropTypes.func,
     accessor: PropTypes.string,
     filters: PropTypes.object,
     sorting: PropTypes.object,
+
     selected: PropTypes.array,
+
+    buttonContainerWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), //100 -> 100px, '50%' -> '50%'
+    multiSelect: PropTypes.bool,
+    applyInstantly: PropTypes.bool,
+    closeAfterSelect: PropTypes.bool,
     // data: PropTypes.arrayOf(oneOfType([PropTypes.object, PropTypes.string, PropTypes.number, PropTypes.bool]) ),
     // loadingState: PropTypes.bool,
     maxHeight: PropTypes.number, // maxHeight of dropdown list in px
@@ -157,6 +162,8 @@ DropdownList.propTypes = {
     buttonIcon: PropTypes.any,
 }
 DropdownList.defaultProps = {
+    dataFieldName: 'data',
+    dataLoader: defaultDataLoader,
     multiSelect: false,
     closeAfterSelect: false,
     applyInstantly: true,
