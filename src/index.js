@@ -170,7 +170,7 @@ DropdownList.defaultProps = {
     selected: [],
     fontRatio: 1,
     // maxWidth: 200,
-    // minWidth: 50,
+    minWidth: 0,
     widthMenuLikeButton: false,
     maxHeight: 400,
 
@@ -184,8 +184,8 @@ DropdownList.defaultProps = {
 
     loadingWildcard: 'loading...',
     opened: false,
-    onOpen: ({accessor}) => console.log('onOpen'),
-    onClose: ({accessor, checkedItems}) => console.log('onClose'),
+    onOpen: ({accessor}) => console.log('onOpen', {accessor}),
+    onClose: ({accessor, checkedItems}) => console.log('onClose', {accessor, checkedItems}),
     onChangeSelected: ({accessor, value}) => {console.log('onChangeSelected', {accessor, value})}
 }
 

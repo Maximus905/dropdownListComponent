@@ -11,7 +11,7 @@ import DropdownList from '../../src'
 import {text} from "@fortawesome/fontawesome-svg-core";
 
 async function dropdownListData ({url, accessor, filters, sorting, dataFieldName}) {
-  const data = Array.from(Array(5), () => 0).map((value, index) => `item-${index}`)
+  const data = Array.from(Array(5), () => 0).map((value, index) => `item-${index} another long text and so on`)
     data.push(true, false)
   console.log('data', data, accessor, filters, sorting, dataFieldName)
   return new Promise(resolve => {
@@ -73,7 +73,7 @@ const Demo = () => {
                     <div className="col-4 bg-info">
                         <p>container for button</p>
                         <p>width of button - 50%</p>
-                        <DropdownList dataUrl="http://test.url" accessor="testAccessor"  buttonContainerWidth={'50%'}  dataLoader={dropdownListData} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
+                        <DropdownList dataUrl="http://test.url" accessor="testAccessor"  buttonContainerWidth={'50%'}  dataLoader={dropdownListData} buttonIcon={Icon1} minWidth={150}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
                     </div>
                 </div>
             </div>

@@ -85,39 +85,37 @@ const ItemsBox = (props) => {
     const listBoxHeight = () => {
         return !itemHeight ? maxHeight : (fuseFiltered.length * itemHeight > maxHeight ? maxHeight : fuseFiltered.length * itemHeight)
     }
+    const ddItemStyleBase = css`
+                              max-height: ${maxHeight}px;
+                              overflow-y: auto;
+                              max-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : maxWidth}px; 
+                              min-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : minWidth}px;
+                `
     //if haven't set sizes of item for List component mount the longest item and get its sizes
     if (isLoading) {
         return (
             (
                 <div css={css`
-                              max-height: ${maxHeight}px;
-                              overflow-y: auto;
-                              max-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : maxWidth}px; 
-                              min-width: ${widthMenuLikeButton && buttonWidth ? buttonWidth : minWidth}px`}>
-                    {/*<div css={css`overflow-y: auto; max-width: ${maxWidth}px; min-width: ${minWidth}px`} >*/}
-                        {/*<EmptyList label={loadingWildcard} /></div>*/}
+                    ${ddItemStyleBase};
+                    user-select: none;
+                `}>
                     <DropdownItem label={loadingWildcard} showCheckIcon={false} onClick={() => {}} />
-                    {/*</div>*/}
                 </div>
             )
         )
     } else if (data.length === 0) {
         return (
             (
-                <div css={css`max-height: ${maxHeight}px;overflow-y: auto; max-width: ${maxWidth}px; min-width: ${minWidth}px`}>
-                    {/*<div css={css`overflow-y: auto; max-width: ${maxWidth}px; min-width: ${minWidth}px`} >*/}
-                        <DropdownItem label={emptyListWildcard} showCheckIcon={false} onClick={() => {}} />
-                {/*</div>*/}
+                <div css={ddItemStyleBase}>
+                    <DropdownItem label={emptyListWildcard} showCheckIcon={false} onClick={() => {}} />
                 </div>
             )
         )
     } else if (!itemWidth && ! itemHeight) {
         const longestItem = data[longestRowIndex({data, fieldName: 'label'})]
         return (
-            <div css={css`max-height: ${maxHeight}px;overflow-y: scroll; max-width: ${maxWidth}px; min-width: ${minWidth}px`} ref={itemRef}>
-                {/*<div css={css`overflow-y: scroll; max-width: ${maxWidth}px; min-width: ${minWidth}px`} ref={itemRef}>*/}
+            <div css={ddItemStyleBase} ref={itemRef}>
                     <DropdownItem {...{value: longestItem.value, label: longestItem.label, checked: longestItem.checked }} />
-                {/*</div>*/}
             </div>
         )
     }  else {

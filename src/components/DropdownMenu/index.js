@@ -12,6 +12,7 @@ const DropdownMenu = (props) => {
             padding: 0;
             max-width: ${maxWidth}px;
             min-width: ${minWidth}px;
+            cursor: default;
         `} {...props} >
             {props.children}
         </DropdownMenuBs>
