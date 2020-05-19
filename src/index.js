@@ -16,7 +16,7 @@ import DropdownContext from "./DropdownContext";
 import {defaultDataLoader} from "./loaders";
 
 const DropdownList = (props) => {
-    const {buttonContainerWidth, buttonIcon, accessor, dataUrl, dataFieldName, dataLoader, filters, sorting, selected,
+    const {buttonContainerWidth, buttonIcon, accessor, dataUrl, dataFieldName, dataLoader, labelFieldName, valueFieldName, filters, sorting, selected,
         applyInstantly, closeAfterSelect,
         maxHeight, maxWidth,minWidth,
         flip,
@@ -58,7 +58,7 @@ const DropdownList = (props) => {
     // for lazy loading data for list when list is opening
     useEffect(() => {
         if (isOpened && invalidData) {
-            asyncDispatch(requestData({url: dataUrl, dataFieldName, fetchFunction: dataLoader, accessor, filters, sorting, wildcards, selected})).then(r => console.log('data is fetched'))
+            asyncDispatch(requestData({url: dataUrl, dataFieldName, fetchFunction: dataLoader, labelFieldName, valueFieldName, accessor, filters, sorting, wildcards, selected})).then(r => console.log('data is fetched'))
         }
     }, [isOpened, invalidData])
     useEffect(() => {
@@ -123,7 +123,7 @@ const DropdownList = (props) => {
 DropdownList.propTypes = {
     dataUrl: PropTypes.string,
     dataFieldName: PropTypes.string,
-    dataLoader: PropTypes.func,
+    dataLoader: PropTypes.func, // async function like async ({url, accessor, filters, sorting, dataFieldName, labelFieldName, valueFieldName}) => {}
     accessor: PropTypes.string,
     filters: PropTypes.object,
     sorting: PropTypes.object,
@@ -150,6 +150,8 @@ DropdownList.propTypes = {
     //
     fontRatio: PropTypes.number,
 
+    labelFieldName: PropTypes.string, // if server's response is array of objects
+    valueFieldName: PropTypes.string, // if server's response is array of objects
     emptyWildcard: PropTypes.string,
     emptyValueWildcard: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
     falseWildcard: PropTypes.string,
@@ -176,6 +178,8 @@ DropdownList.defaultProps = {
 
     flip: true,
 
+    labelFieldName: 'lab',
+    valueFieldName: 'val',
     emptyWildcard: '<пусто>',
     emptyValueWildcard: '',
     falseWildcard: 'false',

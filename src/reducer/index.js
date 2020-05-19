@@ -15,13 +15,14 @@ import {loadingData, receiveData, receiveInvalidData} from "../actions";
 import {convertDataList, convertCheckedItemsArray} from "../helpers";
 
 export function dispatchMiddleware(dispatch) {
-    async function getData({dispatch, url, dataFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems}) {
+    async function getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems}) {
         const {emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard} = wildcards
         dispatch(loadingData())
         try {
-            const result = await fetchFunction({url, accessor, filters, sorting, dataFieldName})
+            const result = await fetchFunction({url, accessor, filters, sorting, dataFieldName, labelFieldName, valueFieldName})
+            console.log('from server', result)
             if (check.array(result[dataFieldName])) {
-                const dropdownList = convertDataList({data: result[dataFieldName], emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
+                const dropdownList = convertDataList({data: result[dataFieldName], labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
                 dispatch(receiveData({
                     data: dropdownList,
                     checkedItems,
@@ -38,12 +39,12 @@ export function dispatchMiddleware(dispatch) {
     }
     return (action) => {
         const {type, payload} = action
-        const {fetchFunction, accessor, filters, sorting, wildcards, selected, url, dataFieldName} = payload || {}
+        const {fetchFunction, accessor, filters, sorting, wildcards, selected, url, dataFieldName, labelFieldName, valueFieldName} = payload || {}
         const {emptyValueWildcard} = wildcards || {}
         switch (type) {
             case REQUEST_DATA:
                 const checkedItems = convertCheckedItemsArray({emptyValueWildcard, checkedItems: selected})
-                return getData({dispatch, url, dataFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems})
+                return getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems})
             default:
                 return dispatch(action)
         }

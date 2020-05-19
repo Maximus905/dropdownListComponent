@@ -22,6 +22,33 @@ function createListFromArray({data, emptyWildcard, emptyValueWildcard, trueWildc
     }, new Map())
     return Array.from(resMap.values())
 }
+
+function createListFromArrayOfObjects({data, labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems = []}) {
+    let value
+    let label
+    const resMap = data.reduce((acc, item) => {
+        //check value
+        if (item[valueFieldName] === '' || item[valueFieldName] === null || item[valueFieldName] === undefined) {
+            value = emptyValueWildcard
+        } else {
+            value = item[valueFieldName]
+        }
+        //check label
+        if (item[labelFieldName] === '' || item[labelFieldName] === null || item[labelFieldName] === undefined) {
+            label = emptyWildcard
+        } else if (item[labelFieldName] === true) {
+            label = trueWildcard
+        } else if (item[labelFieldName] === false) {
+            label = falseWildcard
+        } else {
+            label = item[labelFieldName]
+        }
+        //create record in Map
+        return acc.set(value, {value, label, checked: checkedItems.includes(value)})
+    }, new Map())
+    return Array.from(resMap.values())
+}
+
 export function convertCheckedItemsArray({emptyValueWildcard, checkedItems = []}) {
     const resMap = checkedItems.reduce((acc, item) => {
         return acc.add(item === '' || item === null || item === undefined ? emptyValueWildcard : item)
@@ -33,13 +60,8 @@ export function convertDataList ({data, labelFieldName, valueFieldName, emptyWil
     if (data.length === 0) return data
     const testItem = data[0]
     if (check.object(testItem)) {
-        //TODO implement createListFromArrayOfObjects
-        // return createListFromArrayOfObjects({data, labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
+        return createListFromArrayOfObjects({data, labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
     } else {
-        return createListFromArray({data, labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
+        return createListFromArray({data, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
     }
-
-
-    if (data.length === 0) return []
-    return createListFromArray({data, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
 }
