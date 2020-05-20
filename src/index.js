@@ -47,7 +47,7 @@ const DropdownList = (props) => {
     const [state, dispatch] = useReducer(rootReducer, {...initialState,
         maxHeight, maxWidth, minWidth,
     })
-    const {checkedItems, isOpened, reopen, invalidData, unsavedChanges} = state
+    const {checkedItemsValue, checkedItemsLabel, isOpened, reopen, invalidData, unsavedChanges} = state
     const asyncDispatch = dispatchMiddleware(dispatch)
 
     const toggleOpenState = () => dispatch(switchOpenState())
@@ -65,9 +65,9 @@ const DropdownList = (props) => {
         if (isOpened) {
             onOpenExt({accessor})
         } else if (isOpened === false) {
-            onCloseExt({accessor, checkedItems})
+            onCloseExt({accessor, value: checkedItemsValue, label: checkedItemsLabel})
             if (unsavedChanges && !applyInstantly) {
-                onChangeSelectedExt({accessor, value: checkedItems})
+                onChangeSelectedExt({accessor, value: checkedItemsValue, label: checkedItemsLabel})
                 dispatch(resetUnsaved(closeAfterSelect))
             }
         }
@@ -79,7 +79,7 @@ const DropdownList = (props) => {
     //invoke external onChangeFilter for changing depends on applyInstantly param
     useEffect(() => {
         if (unsavedChanges && applyInstantly) {
-            onChangeSelectedExt({accessor, value: checkedItems})
+            onChangeSelectedExt({accessor, value: checkedItemsValue, label: checkedItemsLabel})
             dispatch(resetUnsaved(closeAfterSelect))
         }
         // if (closeAfterSelect) dispatch(switchOpenState())
@@ -111,7 +111,7 @@ const DropdownList = (props) => {
                 e.stopPropagation()
             }} >
                 <DropdownToggle css={toggleCss} tag='div' >
-                    <DropdownButton buttonRef={buttonRef} />
+                    <DropdownButton buttonRef={buttonRef} checkedItemsValue={checkedItemsValue} checkedItemsLabel={checkedItemsLabel} />
                 </DropdownToggle>
                 <DropdownMenu modifiers={offset} flip={flip} right={rightAlignment}>
                     <MenuBody />
@@ -189,8 +189,8 @@ DropdownList.defaultProps = {
     loadingWildcard: 'loading...',
     opened: false,
     onOpen: ({accessor}) => console.log('onOpen', {accessor}),
-    onClose: ({accessor, checkedItems}) => console.log('onClose', {accessor, checkedItems}),
-    onChangeSelected: ({accessor, value}) => {console.log('onChangeSelected', {accessor, value})}
+    onClose: ({accessor, value, label}) => console.log('onClose', {accessor, value, label}),
+    onChangeSelected: ({accessor, value, label}) => {console.log('onChangeSelected', {accessor, value, label})}
 }
 
 export default DropdownList

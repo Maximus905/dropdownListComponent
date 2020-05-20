@@ -21,6 +21,6 @@ export const changeMenuMaxHeight = (value) => ({type: CHANGE_MENU_MAX_HEIGHT, pa
 export const updateDataList = (data) => ({type: UPDATE_DATA_LIST, payload: data})
 export const requestData = ({url, dataFieldName, fetchFunction, labelFieldName, valueFieldName, accessor, filters, sorting, wildcards, selected}) => ({type: REQUEST_DATA, payload: {url, dataFieldName, fetchFunction, labelFieldName, valueFieldName, accessor, filters, sorting, wildcards, selected}})
 export const loadingData = () => ({type: LOADING_DATA})
-export const receiveData = ({data, checkedItems, checkedItemsCounter}) => ({type: RECEIVE_DATA, payload: {data, checkedItems, checkedItemsCounter}})
+export const receiveData = ({data, checkedItemsValue, checkedItemsLabel, checkedItemsCounter}) => ({type: RECEIVE_DATA, payload: {data, checkedItemsValue, checkedItemsLabel, checkedItemsCounter}})
 export const receiveInvalidData = () => ({type: RECEIVE_INVALID_DATA})
 export const setButtonWidth = ({width}) => ({type: SET_BUTTON_WIDTH, payload: width})

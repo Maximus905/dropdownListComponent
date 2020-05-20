@@ -15,18 +15,20 @@ import {loadingData, receiveData, receiveInvalidData} from "../actions";
 import {convertDataList, convertCheckedItemsArray} from "../helpers";
 
 export function dispatchMiddleware(dispatch) {
-    async function getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems}) {
+    async function getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItemsValue}) {
         const {emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard} = wildcards
         dispatch(loadingData())
         try {
             const result = await fetchFunction({url, accessor, filters, sorting, dataFieldName, labelFieldName, valueFieldName})
             console.log('from server', result)
             if (check.array(result[dataFieldName])) {
-                const dropdownList = convertDataList({data: result[dataFieldName], labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItems})
+                const dropdownList = convertDataList({data: result[dataFieldName], labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItemsValue})
+                const checkedItemsLabel = dropdownList.reduce((acc, item) => item.checked ? acc.concat(item.label) : acc, [])
                 dispatch(receiveData({
                     data: dropdownList,
-                    checkedItems,
-                    checkedItemsCounter: dropdownList.reduce((acc, item) => item.checked ? ++acc : acc, 0)
+                    checkedItemsValue,
+                    checkedItemsLabel,
+                    checkedItemsCounter: checkedItemsLabel.length
                 }))
             } else {
                 console.log('Dropdown list: Invalid format of fetched data: ', result )
@@ -43,8 +45,8 @@ export function dispatchMiddleware(dispatch) {
         const {emptyValueWildcard} = wildcards || {}
         switch (type) {
             case REQUEST_DATA:
-                const checkedItems = convertCheckedItemsArray({emptyValueWildcard, checkedItems: selected})
-                return getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItems})
+                const checkedItemsValue = convertCheckedItemsArray({emptyValueWildcard, checkedItemsValue: selected})
+                return getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItemsValue})
             default:
                 return dispatch(action)
         }
@@ -55,9 +57,9 @@ const rootReducer = (state, action) => {
     const {type, payload} = action
     const newState = {}
     const {multiSelect, value} = payload || {}
-    const clickOnItemHandler = ({checkedItems, value, multiSelect}) => {
-        const checked = new Set(checkedItems)
-        if (!multiSelect && checked.has(value)) return checkedItems
+    const clickOnItemHandler = ({checkedItemsValue, value, multiSelect}) => {
+        const checked = new Set(checkedItemsValue)
+        if (!multiSelect && checked.has(value)) return checkedItemsValue
         if (multiSelect) {
             checked.has(value) ? checked.delete(value) : checked.add(value)
         } else {
@@ -75,15 +77,17 @@ const rootReducer = (state, action) => {
         case RESET_UNSAVED:
             return {...state, unsavedChanges: false, isOpened: payload ? false : state.isOpened}
         case CLICK_ON_ITEM:
-            //add/remove clicked item into checkedItems array
-            newState.checkedItems = clickOnItemHandler({checkedItems: state.checkedItems, value, multiSelect})
-            newState.unsavedChanges = newState.checkedItems !== state.checkedItems
+            //add/remove clicked item into checkedItemsValue array
+            newState.checkedItemsValue = clickOnItemHandler({checkedItemsValue: state.checkedItemsValue, value, multiSelect})
+            newState.unsavedChanges = newState.checkedItemsValue !== state.checkedItemsValue
             //set checked status in data[]
             if (newState.unsavedChanges) {
                 newState.checkedItemsCounter = 0
+                newState.checkedItemsLabel = []
                 newState.data = state.data.map(item => {
-                    if (newState.checkedItems.includes(item.value)) {
+                    if (newState.checkedItemsValue.includes(item.value)) {
                         ++newState.checkedItemsCounter
+                        newState.checkedItemsLabel.push(item.label)
                         return {...item, checked: true}
                     } else {
                         return {...item, checked: false}
@@ -106,7 +110,7 @@ const rootReducer = (state, action) => {
         case LOADING_DATA:
             return {...state, isLoading: true, invalidData: false}
         case RECEIVE_DATA:
-            return {...state, data: payload.data, checkedItems: payload.checkedItems, checkedItemsCounter: payload.checkedItemsCounter, isLoading: false, invalidData: false}
+            return {...state, data: payload.data, checkedItemsValue: payload.checkedItemsValue, checkedItemsLabel: payload.checkedItemsLabel, checkedItemsCounter: payload.checkedItemsCounter, isLoading: false, invalidData: false}
         case RECEIVE_INVALID_DATA:
             return {...state, data: [], isLoading: false, invalidData: true}
         case SET_BUTTON_WIDTH:

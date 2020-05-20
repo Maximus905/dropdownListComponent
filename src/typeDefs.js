@@ -11,7 +11,7 @@
  * @property {number} itemHeight
  * @property {boolean} settingsOn // if true - render settings menu instead list od data
  * @property {Object.<DropDownLastClickedItemShape>} lastClicked
- * @property {number} checkedItems // counter of checked items
+ * @property {number} checkedItemsValue // counter of checked items
  * @property {number} lastClickSelectAll // timestamp of SelectAll click event
  */
 /**

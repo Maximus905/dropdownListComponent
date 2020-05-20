@@ -30,10 +30,12 @@ async function dropdownListDataAsObjArray ({url, accessor, filters, sorting, dat
   })
 }
 
-const Icon1 = ({buttonRef}) => {
+const Icon1 = ({buttonRef, checkedItemsValue, checkedItemsLabel}) => {
     return (
         <Button className="d-flex" css={css`width: 100%`} innerRef={buttonRef} size='sm' >
-            <div className="flex-grow-1 text-truncate" title="text on the button">text on the button</div>
+            <div className="flex-grow-1 text-truncate" title="text on the button">
+                {checkedItemsLabel.length > 0 ? checkedItemsLabel.join(',') : 'select Item'}
+            </div>
             <div className="flex-grow-0 pl-1"><FontAwesomeIcon icon={faAngleDown} /></div>
         </Button>
     )

@@ -12,6 +12,7 @@ export const initialState = {
     inputValue: '',
     itemWidth: null,
     itemHeight: null,
-    checkedItems: [],
+    checkedItemsValue: [],
+    checkedItemsLabel: [],
     checkedItemsCounter: 0,
 }

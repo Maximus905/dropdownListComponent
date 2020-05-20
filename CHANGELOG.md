@@ -10,3 +10,5 @@
   ```javascript
   [{val: 'val-1', lab: 'label 1'}, {val: 'val-n', lab: 'label N'}]
   ``` 
+## 1.0.6
+* added property __label__ to event handlers *onChangeSelected* and *onClose*. This is array of checked items label.
