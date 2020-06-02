@@ -24,7 +24,8 @@ const DropdownList = (props) => {
         emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard,
         onChangeSelected: onChangeSelectedExt,
         onOpen: onOpenExt,
-        onClose: onCloseExt
+        onClose: onCloseExt,
+        disabled,
     } = props
     const DropdownButton = buttonIcon ? buttonIcon : DefaultButton
     const buttonRef = useRef(null)
@@ -110,8 +111,8 @@ const DropdownList = (props) => {
             <Dropdown containerWidth={buttonContainerWidth} onClick={(e) => {
                 e.stopPropagation()
             }} >
-                <DropdownToggle css={toggleCss} tag='div' >
-                    <DropdownButton buttonRef={buttonRef} checkedItemsValue={checkedItemsValue} checkedItemsLabel={checkedItemsLabel} />
+                <DropdownToggle css={toggleCss} tag='div' disabled={disabled} >
+                    <DropdownButton buttonRef={buttonRef} checkedItemsValue={checkedItemsValue} checkedItemsLabel={checkedItemsLabel} disabled={disabled} />
                 </DropdownToggle>
                 <DropdownMenu modifiers={offset} flip={flip} right={rightAlignment}>
                     <MenuBody />
@@ -129,6 +130,8 @@ DropdownList.propTypes = {
     sorting: PropTypes.object,
 
     selected: PropTypes.array,
+
+    disabled: PropTypes.bool,
 
     buttonContainerWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), //100 -> 100px, '50%' -> '50%'
     multiSelect: PropTypes.bool,
@@ -170,6 +173,7 @@ DropdownList.defaultProps = {
     closeAfterSelect: false,
     applyInstantly: true,
     selected: [],
+    disabled: false,
     fontRatio: 1,
     // maxWidth: 200,
     minWidth: 0,

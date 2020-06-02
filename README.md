@@ -33,6 +33,8 @@
 
 * __selected__: array of values that will be checked in the list at the first time after fetching data from server
 
+* __disabled__: true/false. Enable/disable component
+
 * __buttonContainerWidth__: define the width of button in container. See demo code as example. 
 
   Interpretation of values: 100 -> 100px, '50%' -> '50%'

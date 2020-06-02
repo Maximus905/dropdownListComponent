@@ -12,3 +12,5 @@
   ``` 
 ## 1.0.6
 * added property __label__ to event handlers *onChangeSelected* and *onClose*. This is array of checked items label.
+## 1.0.7
+* added __disabled__ property. Default value __false__

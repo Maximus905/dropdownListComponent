@@ -30,9 +30,9 @@ async function dropdownListDataAsObjArray ({url, accessor, filters, sorting, dat
   })
 }
 
-const Icon1 = ({buttonRef, checkedItemsValue, checkedItemsLabel}) => {
+const Icon1 = ({buttonRef, checkedItemsValue, checkedItemsLabel, disabled}) => {
     return (
-        <Button className="d-flex" css={css`width: 100%`} innerRef={buttonRef} size='sm' >
+        <Button className="d-flex" css={css`width: 100%`} innerRef={buttonRef} size='sm' disabled={disabled} >
             <div className="flex-grow-1 text-truncate" title="text on the button">
                 {checkedItemsLabel.length > 0 ? checkedItemsLabel.join(',') : 'select Item'}
             </div>
@@ -69,8 +69,8 @@ const Demo = () => {
                     <p>Width dropdown menu like width button (widthMenuLikeButton property), data loader gives data as array</p>
                     <div className="col-4 bg-info">
                         <p>container for button</p>
-                        <p>width of button - 50%</p>
-                        <DropdownList dataUrl="http://test.url" accessor="testAccessor"  buttonContainerWidth={'50%'}  dataLoader={dropdownListData} buttonIcon={Icon1} minWidth={150}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
+                        <p>width of button - 50%, component is disabled via disabled props</p>
+                        <DropdownList dataUrl="http://test.url" accessor="testAccessor"  buttonContainerWidth={'50%'}  dataLoader={dropdownListData} buttonIcon={Icon1} minWidth={150}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton disabled/>
                     </div>
                 </div>
             </div>
