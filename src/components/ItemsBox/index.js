@@ -42,9 +42,7 @@ const ItemsBox = (props) => {
     const fuseOption = {
         shouldSort: true,
         threshold: 0.15,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
+        ignoreLocation: true,
         minMatchCharLength: 1,
         keys: [
             'label'

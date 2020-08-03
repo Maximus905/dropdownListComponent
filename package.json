@@ -1,6 +1,6 @@
 {
   "name": "@rsb/dropdown-list",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "dropdown list component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -26,7 +26,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
     "check-types": "^11.1.2",
-    "fuse.js": "^5.0.10-beta",
+    "fuse.js": "^6.4.1",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react-window": "^1.8.5",

@@ -14,3 +14,7 @@
 * added property __label__ to event handlers *onChangeSelected* and *onClose*. This is array of checked items label.
 ## 1.0.7
 * added __disabled__ property. Default value __false__
+## 1.0.8
+* disabled location and distance for Fuse
+## 1.0.9
+* removed legacy fuse options
