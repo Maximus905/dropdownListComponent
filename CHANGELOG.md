@@ -18,3 +18,5 @@
 * disabled location and distance for Fuse
 ## 1.0.9
 * removed legacy fuse options
+## 1.0.10
+* removed unnecessary console commands

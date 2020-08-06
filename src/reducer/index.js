@@ -20,7 +20,6 @@ export function dispatchMiddleware(dispatch) {
         dispatch(loadingData())
         try {
             const result = await fetchFunction({url, accessor, filters, sorting, dataFieldName, labelFieldName, valueFieldName})
-            console.log('from server', result)
             if (check.array(result[dataFieldName])) {
                 const dropdownList = convertDataList({data: result[dataFieldName], labelFieldName, valueFieldName, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItemsValue})
                 const checkedItemsLabel = dropdownList.reduce((acc, item) => item.checked ? acc.concat(item.label) : acc, [])
