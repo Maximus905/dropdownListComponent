@@ -8,11 +8,11 @@ import {
     CHANGE_MENU_MAX_HEIGHT,
     UPDATE_DATA_LIST,
     REQUEST_DATA, LOADING_DATA, RECEIVE_DATA, RECEIVE_INVALID_DATA, RESET_UNSAVED,
-    SET_BUTTON_WIDTH
+    SET_BUTTON_WIDTH, INVALIDATE_DATA
 } from "../constants/actions"
 import {reopenDropdownListSetter} from "../helpers";
-import {loadingData, receiveData, receiveInvalidData} from "../actions";
-import {convertDataList, convertCheckedItemsArray} from "../helpers";
+import {invalidateData, loadingData, receiveData, receiveInvalidData} from "../actions";
+import {convertDataList, convertCheckedItemsArray, resetData} from "../helpers";
 
 export function dispatchMiddleware(dispatch) {
     async function getData({dispatch, url, dataFieldName, labelFieldName, valueFieldName, fetchFunction, accessor, filters, sorting, wildcards, checkedItemsValue}) {
@@ -112,6 +112,8 @@ const rootReducer = (state, action) => {
             return {...state, data: payload.data, checkedItemsValue: payload.checkedItemsValue, checkedItemsLabel: payload.checkedItemsLabel, checkedItemsCounter: payload.checkedItemsCounter, isLoading: false, invalidData: false}
         case RECEIVE_INVALID_DATA:
             return {...state, data: [], isLoading: false, invalidData: true}
+        case INVALIDATE_DATA:
+            return {...state, ...resetData()}
         case SET_BUTTON_WIDTH:
             return {...state, buttonWidth: payload}
         default:

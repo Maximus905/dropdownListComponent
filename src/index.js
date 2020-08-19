@@ -11,7 +11,7 @@ import DropdownButton from "./components/DropdownButton"
 import MenuBody from "./components/MenuBody";
 import rootReducer, {dispatchMiddleware} from "./reducer";
 import {initialState} from "./constants/initialState";
-import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved, setButtonWidth} from "./actions";
+import {changeMenuMaxHeight, switchOpenState, requestData, resetUnsaved, setButtonWidth, invalidateData} from "./actions";
 import DropdownContext from "./DropdownContext";
 import {defaultDataLoader} from "./loaders";
 
@@ -92,6 +92,11 @@ const DropdownList = (props) => {
             dispatch(reopen())
         }
     }, [reopen])
+
+    //reset data if filter changed
+    useEffect(() => {
+        dispatch(invalidateData())
+    }, [filters])
 
     const context = {
         ...props,

@@ -64,3 +64,15 @@ export function convertDataList ({data, labelFieldName, valueFieldName, emptyWil
         return createListFromArray({data, emptyWildcard, emptyValueWildcard, trueWildcard, falseWildcard, checkedItemsValue})
     }
 }
+
+export function resetData() {
+    return {
+        data: [],
+        itemWidth: null,
+        itemHeight: null,
+        checkedItemsValue: [],
+        checkedItemsLabel: [],
+        checkedItemsCounter: 0,
+        invalidData: true
+    }
+}

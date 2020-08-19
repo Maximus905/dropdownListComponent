@@ -20,3 +20,5 @@
 * removed legacy fuse options
 ## 1.0.10
 * removed unnecessary console commands
+## 1.0.11
+* changing filters causes reset of data 

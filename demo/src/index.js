@@ -6,6 +6,7 @@ import {render} from 'react-dom'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons"
 import {Button} from 'reactstrap'
+import {useState} from 'react'
 
 import DropdownList from '../../src'
 import {text} from "@fortawesome/fontawesome-svg-core";
@@ -62,6 +63,8 @@ const ex_1 = css`
 `
 
 const Demo = () => {
+    const [filter, setFilter] = useState(1)
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -80,6 +83,15 @@ const Demo = () => {
                     <div className="col-4 bg-info">
                         <p>width of button - 100%</p>
                         <DropdownList buttonContainerWidth={'100%'} accessor="testAccessor"  dataUrl="http://test.url"  dataLoader={dropdownListDataAsObjArray} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton/>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
+                    <p>Reset data of list if filter changed</p>
+                    <div className="col-4 bg-info d-flex">
+                        <Button className="mr-2" size="sm" onClick={() => setFilter(filter + 1)}>Change filter</Button>
+                        <DropdownList buttonContainerWidth="50%" accessor="testAccessor"  dataUrl="http://test.url"  dataLoader={dropdownListDataAsObjArray} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton filters={{filter}}/>
                     </div>
                 </div>
             </div>
