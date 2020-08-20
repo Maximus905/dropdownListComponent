@@ -1,6 +1,6 @@
 {
   "name": "@rsb/dropdown-list",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "dropdown list component",
   "main": "lib/index.js",
   "module": "es/index.js",

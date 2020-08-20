@@ -131,8 +131,8 @@ DropdownList.propTypes = {
     dataFieldName: PropTypes.string,
     dataLoader: PropTypes.func, // async function like async ({url, accessor, filters, sorting, dataFieldName, labelFieldName, valueFieldName}) => {}
     accessor: PropTypes.string,
-    filters: PropTypes.object,
-    sorting: PropTypes.object,
+    filters: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.number]),
+    sorting: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.number]),
 
     selected: PropTypes.array,
 

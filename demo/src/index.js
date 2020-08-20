@@ -91,7 +91,7 @@ const Demo = () => {
                     <p>Reset data of list if filter changed</p>
                     <div className="col-4 bg-info d-flex">
                         <Button className="mr-2" size="sm" onClick={() => setFilter(filter + 1)}>Change filter</Button>
-                        <DropdownList buttonContainerWidth="50%" accessor="testAccessor"  dataUrl="http://test.url"  dataLoader={dropdownListDataAsObjArray} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton filters={{filter}}/>
+                        <DropdownList buttonContainerWidth="50%" accessor="testAccessor"  dataUrl="http://test.url"  dataLoader={dropdownListDataAsObjArray} buttonIcon={Icon1} minWidth={50}  maxHeight={300} rightAlignment flip closeAfterSelect={false} selected={[true]} widthMenuLikeButton filters={filter}/>
                     </div>
                 </div>
             </div>
